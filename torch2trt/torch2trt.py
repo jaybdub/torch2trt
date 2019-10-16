@@ -319,14 +319,27 @@ class TRTModule(torch.nn.Module):
         for i, input_name in enumerate(self.input_names):
             idx = self.engine.get_binding_index(input_name)
             bindings[idx] = inputs[i].data_ptr()
-
-        self.context.execute_async(batch_size, bindings, torch.cuda.current_stream().cuda_stream)
+        
+        if self.profiling:
+            self.context.execute(batch_size, bindings)
+        else:
+            self.context.execute_async(batch_size, bindings, torch.cuda.current_stream().cuda_stream)
 
         outputs = tuple(outputs)
         if len(outputs) == 1:
             outputs = outputs[0]
 
         return outputs
+    
+    def enable_profiling(self, profiler=None):
+        self.profiling = True
+        if profiler:
+            self.context.profiler = profiler
+        elif not self.context.profiler:
+            self.context.profiler = trt.Profiler()
+    
+    def disable_profiling(self):
+        self.profiling = False
 
 
 def torch2trt(module, inputs, input_names=None, output_names=None, log_level=trt.Logger.ERROR, max_batch_size=1,
