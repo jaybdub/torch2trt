@@ -368,3 +368,135 @@ def tensorrt_converter(method):
         CONVERTERS[method] = converter
         return converter
     return register_converter
+
+
+# ==================== TORCH2TRT JIT =========================================
+
+
+def scalar_type_to_trt(dtype):
+    if dtype == 'Float':
+        return trt.float32
+    elif dtype == 'Half':
+        return trt.float16
+    else:
+        raise TypeError('%s is not supported by tensorrt' % dtype)
+        
+
+CONVERTERS_JIT = {}
+
+
+def tensorrt_converter_jit(method):
+    def register_converter(converter):
+        CONVERTERS_JIT[method] = converter
+        return converter
+    return register_converter
+
+
+class Node(object):
+    
+    def __init__(self, ctx, node):
+        self.ctx = ctx
+        self.node = node
+        
+    def inputs(self):
+        return [Value(self.ctx, val) for val in self.node.inputs()]
+    
+    def outputs(self):
+        return [Value(self.ctx, val) for val in self.node.outputs()]
+    
+    def scope(self):
+        return self.node.scopeName()
+    
+    def kind(self):
+        return self.node.kind()
+    
+    def value(self):
+        return self.node.t('value')
+    
+    def add_layer(self, method, *args, **kwargs):
+        layer = method(self.ctx.network, *args, **kwargs)
+        return layer
+            
+
+class Value(object):
+    
+    def __init__(self, ctx, value):
+        self.ctx = ctx
+        self.value = value
+    
+    def node(self):
+        return Node(self.ctx, self.value.node())
+    
+    def name(self):
+        return self.value.debugName()
+    
+    def is_tensor(self):
+        return self.value.isCompleteTensor()
+    
+    def shape(self):
+        return tuple(self.value.type().sizes())
+    
+    def dtype_trt(self):
+        return scalar_type_to_trt(self.value.type().scalarType())
+    
+    def get_trt(self):
+        print('Val %s' % self.name())
+        if self.name() in self.ctx.tensors:
+            return self.ctx.tensors[self.name()]  # get tensor directly
+        elif self.node().kind() in self.ctx.converters:
+            print('Calling converter for %s' % self.node().kind())
+            self.ctx.converters[self.node().kind()](self.node())  # attempt recursive conversion
+            return self.ctx.tensors[self.name()]  # tensor should now be set...
+        else:
+            raise KeyError('No converter found for %s' % self.node().kind())
+    
+    def set_trt(self, trt_tensor):
+        if self.name() not in self.ctx.tensors:
+            self.ctx.tensors[self.name()] = trt_tensor
+            trt_tensor.name = self.name()
+        else:
+            raise RuntimeException('TensorRT value already found in graph')
+
+
+class Context():
+    
+    def __init__(self, graph, network, converters=CONVERTERS_JIT):
+        self.graph = graph
+        self.network = network
+        self.tensors = {}
+        self.converters = converters
+        
+            
+def torch2trt_jit(module, inputs, log_level=trt.Logger.ERROR, max_batch_size=1,
+        fp16_mode=False, max_workspace_size=0, strict_type_constraints=False):
+    
+    model_jit = torch.jit.trace(model, data)
+    graph = model_jit.graph
+    
+    logger = trt.Logger()
+    builder = trt.Builder(logger)
+    
+    ctx = Context(graph, builder.create_network())
+    
+    for output_raw in graph_outputs(graph):
+        
+        output = Value(ctx, output_raw)
+        output_trt = output.get_trt()  # will recursively resolve tensorrt
+        
+        # now, ctx.trt_tensors
+        ctx.network.mark_output(output_trt)
+    
+    builder.max_workspace_size = max_workspace_size
+    builder.fp16_mode = fp16_mode
+    builder.max_batch_size = max_batch_size
+    builder.strict_type_constraints = strict_type_constraints
+
+    engine = builder.build_cuda_engine(ctx.network)
+        
+    input_names = [Value(ctx, val).name() for val in list(graph.inputs())[1:]] # excludes 'self'
+    output_names = [Value(ctx, val).name() for val in list(graph.outputs())]
+    
+    model_trt = TRTModule(engine=engine, input_names=input_names, output_names=output_names)
+    model_trt.network = ctx.network
+    
+    return model_trt
