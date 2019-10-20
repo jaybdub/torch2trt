@@ -470,15 +470,15 @@ class Context():
 def torch2trt_jit(module, inputs, log_level=trt.Logger.ERROR, max_batch_size=1,
         fp16_mode=False, max_workspace_size=0, strict_type_constraints=False):
     
-    model_jit = torch.jit.trace(model, data)
-    graph = model_jit.graph
+    module_jit = torch.jit.trace(module, inputs)
+    graph = module_jit.graph
     
     logger = trt.Logger()
     builder = trt.Builder(logger)
     
     ctx = Context(graph, builder.create_network())
     
-    for output_raw in graph_outputs(graph):
+    for output_raw in graph.outputs():
         
         output = Value(ctx, output_raw)
         output_trt = output.get_trt()  # will recursively resolve tensorrt
@@ -496,7 +496,7 @@ def torch2trt_jit(module, inputs, log_level=trt.Logger.ERROR, max_batch_size=1,
     input_names = [Value(ctx, val).name() for val in list(graph.inputs())[1:]] # excludes 'self'
     output_names = [Value(ctx, val).name() for val in list(graph.outputs())]
     
-    model_trt = TRTModule(engine=engine, input_names=input_names, output_names=output_names)
-    model_trt.network = ctx.network
+    module_trt = TRTModule(engine=engine, input_names=input_names, output_names=output_names)
+    module_trt.network = ctx.network
     
-    return model_trt
+    return module_trt

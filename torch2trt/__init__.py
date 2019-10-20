@@ -1,5 +1,6 @@
 from .torch2trt import *
 from .converters import *
+from .converters_jit import *
 import tensorrt as trt
 
 
