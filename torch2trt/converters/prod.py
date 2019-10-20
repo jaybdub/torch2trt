@@ -15,10 +15,12 @@ def convert_prod(ctx):
     output._trt = layer.get_output(0)
         
         
-@add_module_test(torch.float32, torch.device('cuda'), [(1, 3)])
-@add_module_test(torch.float32, torch.device('cuda'), [(1, 3, 3)])
-def test_prod_reduce_all():
-    return UnaryModule(lambda x: torch.prod(x))     
+# reduce_all not supported since operates on batch
+#
+# @add_module_test(torch.float32, torch.device('cuda'), [(1, 3)])
+# @add_module_test(torch.float32, torch.device('cuda'), [(1, 3, 3)])
+# def test_prod_reduce_all():
+#     return UnaryModule(lambda x: torch.prod(x))     
 
 
 @add_module_test(torch.float32, torch.device('cuda'), [(1, 3)])
