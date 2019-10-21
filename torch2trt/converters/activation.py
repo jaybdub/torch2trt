@@ -24,6 +24,17 @@ def convert_leaky_relu(ctx):
     
     output._trt = layer.get_output(0)
     
+    
+@tensorrt_converter_jit('aten::leaky_relu')
+def convert_leaky_relu(node):
+    input = node.inputs()[0]
+    output = node.outputs()[0]
+    
+    layer = node.add_layer(trt.INetworkDefinition.add_activation, input.get_trt(), trt.ActivationType.LEAKY_RELU)
+    layer.alpha = node.inputs()[1].get_trt()
+    
+    output.set_trt(layer.get_output(0))
+    
 
 @add_module_test(torch.float32, torch.device('cuda'), [(1, 5, 3)])
 def test_leaky_relu():
@@ -45,7 +56,7 @@ def convert_elu(ctx):
     layer.alpha = alpha
     
     output._trt = layer.get_output(0)
-    
+
 
 @add_module_test(torch.float32, torch.device('cuda'), [(1, 5, 3)])
 def test_elu():

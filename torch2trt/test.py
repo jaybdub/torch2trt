@@ -20,7 +20,7 @@ def run(self):
         inputs_conversion += (torch.zeros(shape).to(self.device).type(self.dtype), )
         
     # convert module
-    module_trt = torch2trt(module, inputs_conversion, **self.torch2trt_kwargs)
+    module_trt = torch2trt_jit(module, inputs_conversion, **self.torch2trt_kwargs)
 
     # create inputs for torch/trt.. copy of inputs to handle inplace ops
     inputs = ()

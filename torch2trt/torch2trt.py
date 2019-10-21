@@ -410,8 +410,14 @@ class Node(object):
     def kind(self):
         return self.node.kind()
     
-    def value(self):
+    def tensor_value(self):
         return self.node.t('value')
+    
+    def float_value(self):
+        return self.node.f('value')
+    
+    def int_value(self):
+        return self.node.i('value')
     
     def add_layer(self, method, *args, **kwargs):
         layer = method(self.ctx.network, *args, **kwargs)
@@ -432,6 +438,12 @@ class Value(object):
     
     def is_tensor(self):
         return self.value.isCompleteTensor()
+    
+    def is_float(self):
+        return self.value.type().str() == 'float'
+    
+    def is_int(self):
+        return self.value.type().str() == 'int'
     
     def shape(self):
         return tuple(self.value.type().sizes())

@@ -4,7 +4,12 @@ from .torch2trt import *
 @tensorrt_converter_jit('prim::Constant')
 def convert_constant(node):
     output = node.outputs()[0]
-    layer = node.add_layer(trt.INetworkDefinition.add_constant, output.shape()[1:], node.value().cpu().numpy())
+    if output.is_tensor():
+        layer = node.add_layer(trt.INetworkDefinition.add_constant, output.shape()[1:], node.tensor_value().cpu().numpy())
+    elif output.is_float():
+        layer = node.add_layer(trt.INetworkDefinition.add_constant, tuple(), np.array(node.float_value()))
+    elif output.is_int():
+        layer = node.add_layer(trt.INetworkDefinition.add_constant, tuple(), np.array(node.int_value()))
     output.set_trt(layer.get_output(0))
     
     
