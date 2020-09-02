@@ -212,9 +212,45 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="getting_started.html" title="Getting Started" class="md-nav__link md-nav__link--active">
       Getting Started
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-without-plugins" class="md-nav__link">
+    Install Without plugins
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-with-plugins" class="md-nav__link">
+    Install With plugins
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -372,6 +408,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-without-plugins" class="md-nav__link">
+    Install Without plugins
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-with-plugins" class="md-nav__link">
+    Install With plugins
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -392,56 +450,18 @@
                 
                 <h1 id="getting-started">Getting Started</h1>
 <p>Follow these steps to get started using torch2trt.</p>
-<h1 id="head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-<h2 id="installation">Installation</h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>torch2trt depends on the TensorRT Python API.  On Jetson, this is included with the latest JetPack.  For desktop, please follow the <a href="https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html">TensorRT Installation Guide</a>.  You may also try installing torch2trt inside one of the NGC PyTorch docker containers for <a href="https://ngc.nvidia.com/catalog/containers/nvidia:pytorch">Desktop</a> or <a href="https://ngc.nvidia.com/catalog/containers/nvidia:l4t-pytorch">Jetson</a>.</p>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <h3 id="install-without-plugins">Install Without plugins</h3>
-<p>=======</p>
-<h3 id="option-1-without-plugins">Option 1 - Without plugins</h3>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <p>To install without compiling plugins, call the following</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/NVIDIA-AI-IOT/torch2trt
 <span class="nb">cd</span> torch2trt
 python setup.py install
 </code></pre></div>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <h3 id="install-with-plugins">Install With plugins</h3>
-<p>=======</p>
-<h3 id="option-2-with-plugins-experimental">Option 2 - With plugins (experimental)</h3>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <p>To install with plugins to support some operations in PyTorch that are not natviely supported with TensorRT, call the following</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -451,62 +471,6 @@ python setup.py install
 <span class="nb">cd</span> torch2trt
 sudo python setup.py install --plugins
 </code></pre></div>
-
-<h1 id="head_1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-<h2 id="basic-usage">Basic Usage</h2>
-<p>Below are some usage examples, for more check out the <a href="usage">usage</a> guide.</p>
-<h3 id="convert">Convert</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">torch2trt</span>
-<span class="kn">from</span> <span class="nn">torchvision.models.alexnet</span> <span class="kn">import</span> <span class="n">alexnet</span>
-
-<span class="c1"># create some regular pytorch model...</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">alexnet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-
-<span class="c1"># create example data</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-
-<span class="c1"># convert to TensorRT feeding sample data as input</span>
-<span class="n">model_trt</span> <span class="o">=</span> <span class="n">torch2trt</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">])</span>
-</code></pre></div>
-
-<h3 id="execute">Execute</h3>
-<p>We can execute the returned <code>TRTModule</code> just like the original PyTorch model</p>
-<div class="highlight"><pre><span></span><code><span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">y_trt</span> <span class="o">=</span> <span class="n">model_trt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="c1"># check the output against PyTorch</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_trt</span><span class="p">)))</span>
-</code></pre></div>
-
-<h3 id="save-and-load">Save and load</h3>
-<p>We can save the model as a <code>state_dict</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_trt</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">)</span>
-</code></pre></div>
-
-<p>We can load the saved model into a <code>TRTModule</code></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">TRTModule</span>
-
-<span class="n">model_trt</span> <span class="o">=</span> <span class="n">TRTModule</span><span class="p">()</span>
-
-<span class="n">model_trt</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">))</span>
-</code></pre></div>
-
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
                 
               
               
