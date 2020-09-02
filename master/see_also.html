@@ -15,7 +15,7 @@
     
     
       
-        <title>Home - torch2trt</title>
+        <title>See Also - torch2trt</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#torch2trt" class="md-skip">
+        <a href="#see-also" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Home
+              See Also
             
           </span>
         </div>
@@ -190,20 +190,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-    <a href="index.html" title="Home" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="index.html" title="Home" class="md-nav__link">
       Home
     </a>
-    
   </li>
 
     
@@ -419,11 +410,63 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="see_also.html" title="See Also" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        See Also
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="see_also.html" title="See Also" class="md-nav__link md-nav__link--active">
       See Also
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#layer-support" class="md-nav__link">
+    Layer support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-support" class="md-nav__link">
+    Feature support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extensibility-ease-of-use" class="md-nav__link">
+    Extensibility / Ease of Use
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -444,6 +487,35 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#layer-support" class="md-nav__link">
+    Layer support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-support" class="md-nav__link">
+    Feature support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extensibility-ease-of-use" class="md-nav__link">
+    Extensibility / Ease of Use
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -454,7 +526,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/NVIDIA-AI-IOT/torch2trt/blob/master/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/NVIDIA-AI-IOT/torch2trt/blob/master/see_also.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -462,19 +534,53 @@
                   
                 
                 
-                <h1 id="torch2trt">torch2trt</h1>
-<p><img src="images/chart.svg" style="height:368px"/> </p>
-<p>torch2trt is a PyTorch to TensorRT converter which utilizes the 
-TensorRT Python API.  The converter is</p>
+                <h1 id="see-also">See Also</h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The state of these converters may change over time.  We provide this information here with the hope that it will help shed light on the landscape of tools available for optimizing PyTorch models with TensorRT.
+If you find this information helpful or outdated / misleading, please let us know.</p>
+</div>
+<p>In addition to torch2trt, there are other workflows for optimizing your PyTorch model with TensorRT.</p>
+<p>The other converters we are aware of are</p>
 <ul>
-<li>
-<p>Easy to use - Convert modules with a single function call <code>torch2trt</code></p>
-</li>
-<li>
-<p>Easy to extend - Write your own layer converter in Python and register it with <code>@tensorrt_converter</code></p>
-</li>
+<li><a href="https://github.com/onnx/onnx-tensorrt">ONNX to TensorRT</a></li>
 </ul>
-<p>If you find an issue, please <a href="https://github.com/NVIDIA-AI-IOT/torch2trt">let us know</a>!</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Since the ONNX parser ships with TensorRT, we have included a convenience method for using this
+workflow with torch2trt.  If you want to quickly try the ONNX method using the torch2trt interface, just call <code>torch2trt(..., use_onnx=True)</code>.
+This will perform conversion on the module by exporting the model using PyTorch's JIT tracer,
+and parsing with TensorRT's ONNX parser.</p>
+</div>
+<ul>
+<li><a href="https://github.com/NVIDIA/TRTorch">TRTorch</a></li>
+</ul>
+<p>Which one you use depends largely on your use case. The differences often come down to</p>
+<h2 id="layer-support">Layer support</h2>
+<p>Modern deep learning frameworks are large, and there often arise
+caveats converting between frameworks using a given workflow.  These could include
+limitations in serialization or parsing formats.  Or in some instances, it may be possible
+the layer could be supported, but it has just not been done yet.   TRTorch is strong 
+in the sense that it will default to the original PyTorch method for layers 
+which are not converted to TensorRT.  The best way to know 
+which conversion method works for you is to try converting your model. </p>
+<h2 id="feature-support">Feature support</h2>
+<p>TensorRT is evolving and the conversion workflows may have varying level 
+of feature support.  In some instances, you may wish to use a latest feature of TensorRT, like dynamic shapes,
+but it is not supported in torch2trt or the interface has not yet been exposed.  In this
+instance, we recommend checking to see if it is supported by one of the other workflows.  The ONNX
+converter is typically strong in this regards, since the parser is distributed with TensorRT.  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there is a TensorRT feature you wished to see in torch2trt, please let us know.  We can not gaurantee this will be done, but it helps us gauge interest.</p>
+</div>
+<h2 id="extensibility-ease-of-use">Extensibility / Ease of Use</h2>
+<p>In case none of the converters satisfy for your use case, you may find it necessary to adapt
+the converter to fit your needs.  This is very intuitive with torch2trt,
+since it is done inline with Python, and there are many <a href="converters">examples</a> to reference.  If you know 
+how the original PyTorch method works, and have the TensorRT Python API on hand, it is relatively straight forward to adapt torch2trt to your needs.
+The extensibility is often helpful when you want to implement a converter that is specific to the 
+context the layer appears in.  </p>
                 
               
               
@@ -493,20 +599,20 @@ TensorRT Python API.  The converter is</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-        
-          <a href="getting_started.html" title="Getting Started" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="CHANGELOG.html" title="Changes" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
-                  Next
+                  Previous
                 </span>
-                Getting Started
+                Changes
               </div>
             </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
           </a>
+        
         
       </nav>
     </div>
