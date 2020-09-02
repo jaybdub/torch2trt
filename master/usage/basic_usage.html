@@ -247,82 +247,53 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Basic Usage
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="basic_usage.html" title="Basic Usage" class="md-nav__link md-nav__link--active">
       Basic Usage
     </a>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="reduced_precision.html" title="Reduced Precision" class="md-nav__link">
-      Reduced Precision
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="batch_size.html" title="Batch Size" class="md-nav__link">
-      Batch Size
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="cpp_usage.html" title="Cpp Usage" class="md-nav__link">
-      Cpp Usage
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="custom_converter.html" title="Custom Converter" class="md-nav__link">
-      Custom Converter
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="profiling.html" title="Profiling" class="md-nav__link">
-      Profiling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="debugging.html" title="Debugging" class="md-nav__link">
-      Debugging
-    </a>
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convert" class="md-nav__link">
+    Convert
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    Execute
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#save-and-load" class="md-nav__link">
+    Save and load
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -446,6 +417,35 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convert" class="md-nav__link">
+    Convert
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    Execute
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#save-and-load" class="md-nav__link">
+    Save and load
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -464,7 +464,61 @@
                   
                 
                 
-                <h1 id="basic-usage">Basic Usage</h1>
+                <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<p>Below are some usage examples, for more check out the <a href="usage">usage</a> guide.</p>
+<h3 id="convert">Convert</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">torch2trt</span>
+<span class="kn">from</span> <span class="nn">torchvision.models.alexnet</span> <span class="kn">import</span> <span class="n">alexnet</span>
+
+<span class="c1"># create some regular pytorch model...</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">alexnet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># create example data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># convert to TensorRT feeding sample data as input</span>
+<span class="n">model_trt</span> <span class="o">=</span> <span class="n">torch2trt</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">])</span>
+</code></pre></div>
+
+<h3 id="execute">Execute</h3>
+<p>We can execute the returned <code>TRTModule</code> just like the original PyTorch model</p>
+<div class="highlight"><pre><span></span><code><span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_trt</span> <span class="o">=</span> <span class="n">model_trt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># check the output against PyTorch</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_trt</span><span class="p">)))</span>
+</code></pre></div>
+
+<h3 id="save-and-load">Save and load</h3>
+<p>We can save the model as a <code>state_dict</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_trt</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We can load the saved model into a <code>TRTModule</code></p>
+<h1 id="from-torch2trt-import-trtmodule-model_trt-trtmodule-model_trtload_state_dicttorchloadalexnet_trtpth"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">TRTModule</span>
+
+<span class="n">model_trt</span> <span class="o">=</span> <span class="n">TRTModule</span><span class="p">()</span>
+
+<span class="n">model_trt</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">))</span>
+</code></pre></div></h1>
+<h1 id="basic-usage_1">Basic Usage</h1>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
                 
               
               
@@ -498,13 +552,13 @@
           </a>
         
         
-          <a href="reduced_precision.html" title="Reduced Precision" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../converters.html" title="Converters" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Reduced Precision
+                Converters
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

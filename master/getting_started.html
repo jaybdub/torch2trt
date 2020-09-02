@@ -212,92 +212,9 @@
       
     
     
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Getting Started
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
     <a href="getting_started.html" title="Getting Started" class="md-nav__link md-nav__link--active">
       Getting Started
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-1-without-plugins" class="md-nav__link">
-    Option 1 - Without plugins
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-2-with-plugins-experimental" class="md-nav__link">
-    Option 2 - With plugins (experimental)
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    Basic Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Basic Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#convert" class="md-nav__link">
-    Convert
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#execute" class="md-nav__link">
-    Execute
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#save-and-load" class="md-nav__link">
-    Save and load
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
     
   </li>
 
@@ -331,78 +248,6 @@
   <li class="md-nav__item">
     <a href="usage/basic_usage.html" title="Basic Usage" class="md-nav__link">
       Basic Usage
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/reduced_precision.html" title="Reduced Precision" class="md-nav__link">
-      Reduced Precision
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/batch_size.html" title="Batch Size" class="md-nav__link">
-      Batch Size
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/cpp_usage.html" title="Cpp Usage" class="md-nav__link">
-      Cpp Usage
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/custom_converter.html" title="Custom Converter" class="md-nav__link">
-      Custom Converter
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/profiling.html" title="Profiling" class="md-nav__link">
-      Profiling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage/debugging.html" title="Debugging" class="md-nav__link">
-      Debugging
     </a>
   </li>
 
@@ -527,75 +372,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-1-without-plugins" class="md-nav__link">
-    Option 1 - Without plugins
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-2-with-plugins-experimental" class="md-nav__link">
-    Option 2 - With plugins (experimental)
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    Basic Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Basic Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#convert" class="md-nav__link">
-    Convert
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#execute" class="md-nav__link">
-    Execute
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#save-and-load" class="md-nav__link">
-    Save and load
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -616,19 +392,56 @@
                 
                 <h1 id="getting-started">Getting Started</h1>
 <p>Follow these steps to get started using torch2trt.</p>
+<h1 id="head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
 <h2 id="installation">Installation</h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>torch2trt depends on the TensorRT Python API.  On Jetson, this is included with the latest JetPack.  For desktop, please follow the <a href="https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html">TensorRT Installation Guide</a>.  You may also try installing torch2trt inside one of the NGC PyTorch docker containers for <a href="https://ngc.nvidia.com/catalog/containers/nvidia:pytorch">Desktop</a> or <a href="https://ngc.nvidia.com/catalog/containers/nvidia:l4t-pytorch">Jetson</a>.</p>
 </div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h3 id="install-without-plugins">Install Without plugins</h3>
+<p>=======</p>
 <h3 id="option-1-without-plugins">Option 1 - Without plugins</h3>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>To install without compiling plugins, call the following</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/NVIDIA-AI-IOT/torch2trt
 <span class="nb">cd</span> torch2trt
 python setup.py install
 </code></pre></div>
 
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h3 id="install-with-plugins">Install With plugins</h3>
+<p>=======</p>
 <h3 id="option-2-with-plugins-experimental">Option 2 - With plugins (experimental)</h3>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>To install with plugins to support some operations in PyTorch that are not natviely supported with TensorRT, call the following</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -639,6 +452,7 @@ python setup.py install
 sudo python setup.py install --plugins
 </code></pre></div>
 
+<h1 id="head_1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>Below are some usage examples, for more check out the <a href="usage">usage</a> guide.</p>
 <h3 id="convert">Convert</h3>
@@ -677,6 +491,22 @@ sudo python setup.py install --plugins
 
 <span class="n">model_trt</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">))</span>
 </code></pre></div>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
                 
               
               
