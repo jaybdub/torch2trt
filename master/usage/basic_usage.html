@@ -464,10 +464,9 @@
                   
                 
                 
-                <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<h2 id="basic-usage">Basic Usage</h2>
+                <h1 id="basic-usage">Basic Usage</h1>
 <p>Below are some usage examples, for more check out the <a href="usage">usage</a> guide.</p>
-<h3 id="convert">Convert</h3>
+<h2 id="convert">Convert</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">torch2trt</span>
 <span class="kn">from</span> <span class="nn">torchvision.models.alexnet</span> <span class="kn">import</span> <span class="n">alexnet</span>
@@ -482,7 +481,7 @@
 <span class="n">model_trt</span> <span class="o">=</span> <span class="n">torch2trt</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">])</span>
 </code></pre></div>
 
-<h3 id="execute">Execute</h3>
+<h2 id="execute">Execute</h2>
 <p>We can execute the returned <code>TRTModule</code> just like the original PyTorch model</p>
 <div class="highlight"><pre><span></span><code><span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">y_trt</span> <span class="o">=</span> <span class="n">model_trt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -491,34 +490,18 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_trt</span><span class="p">)))</span>
 </code></pre></div>
 
-<h3 id="save-and-load">Save and load</h3>
+<h2 id="save-and-load">Save and load</h2>
 <p>We can save the model as a <code>state_dict</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_trt</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>We can load the saved model into a <code>TRTModule</code></p>
-<h1 id="from-torch2trt-import-trtmodule-model_trt-trtmodule-model_trtload_state_dicttorchloadalexnet_trtpth"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">TRTModule</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">TRTModule</span>
 
 <span class="n">model_trt</span> <span class="o">=</span> <span class="n">TRTModule</span><span class="p">()</span>
 
 <span class="n">model_trt</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;alexnet_trt.pth&#39;</span><span class="p">))</span>
-</code></pre></div></h1>
-<h1 id="basic-usage_1">Basic Usage</h1>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>4933faf05cd9e5d9aef2b23e7fe692bfda5fbc06</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+</code></pre></div>
                 
               
               
