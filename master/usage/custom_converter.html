@@ -214,10 +214,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
       Usage
@@ -240,6 +242,63 @@
     <a href="basic_usage.html" title="Basic Usage" class="md-nav__link">
       Basic Usage
     </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Custom Converter
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="custom_converter.html" title="Custom Converter" class="md-nav__link md-nav__link--active">
+      Custom Converter
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-custom-converter" class="md-nav__link">
+    Add a custom converter
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -328,18 +387,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../CHANGELOG.html" title="Changes" class="md-nav__link">
-      Changes
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
     <a href="../see_also.html" title="See Also" class="md-nav__link">
       See Also
     </a>
@@ -363,6 +410,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-custom-converter" class="md-nav__link">
+    Add a custom converter
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -382,6 +451,47 @@
                 
                 
                 <h1 id="custom-converter">Custom Converter</h1>
+<p>This page details how to extend or modify the behavior of torch2trt by implementing and registering
+custom converters.</p>
+<h2 id="background">Background</h2>
+<p>torch2trt works by attaching conversion functions (like <code>convert_ReLU</code>) to the original 
+PyTorch functional calls (like <code>torch.nn.ReLU.forward</code>).  The sample input data is passed
+through the network, just as before, except now whenever a registered function (<code>torch.nn.ReLU.forward</code>)
+is encountered, the corresponding converter (<code>convert_ReLU</code>) is also called afterwards.  The converter
+is passed the arguments and return statement of the original PyTorch function, as well as the TensorRT
+network that is being constructed.  The input tensors to the original PyTorch function are modified to
+have an attribute <code>_trt</code>, which is the TensorRT counterpart to the PyTorch tensor.  The conversion function
+uses this <code>_trt</code> to add layers to the TensorRT network, and then sets the <code>_trt</code> attribute for
+relevant output tensors.  Once the model is fully executed, the final tensors returns are marked as outputs
+of the TensorRT network, and the optimized TensorRT engine is built.</p>
+<h2 id="add-a-custom-converter">Add a custom converter</h2>
+<p>Here we show how to add a converter for the <code>ReLU</code> module using the TensorRT
+python API.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">tensorrt</span> <span class="k">as</span> <span class="nn">trt</span>
+<span class="kn">from</span> <span class="nn">torch2trt</span> <span class="kn">import</span> <span class="n">tensorrt_converter</span>
+
+<span class="nd">@tensorrt_converter</span><span class="p">(</span><span class="s1">&#39;torch.nn.ReLU.forward&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">convert_ReLU</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method_args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method_return</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">add_activation</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="o">.</span><span class="n">_trt</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">trt</span><span class="o">.</span><span class="n">ActivationType</span><span class="o">.</span><span class="n">RELU</span><span class="p">)</span>  
+    <span class="n">output</span><span class="o">.</span><span class="n">_trt</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The converter takes one argument, a <code>ConversionContext</code>, which will contain
+the following</p>
+<ul>
+<li>
+<p><code>ctx.network</code> - The TensorRT network that is being constructed.</p>
+</li>
+<li>
+<p><code>ctx.method_args</code> - Positional arguments that were passed to the specified PyTorch function.  The <code>_trt</code> attribute is set for relevant input tensors.</p>
+</li>
+<li><code>ctx.method_kwargs</code> - Keyword arguments that were passed to the specified PyTorch function.</li>
+<li><code>ctx.method_return</code> - The value returned by the specified PyTorch function.  The converter must set the <code>_trt</code> attribute where relevant.</li>
+</ul>
+<p>Please see the <a href="../converters.html">converters</a> page for a list of implemented converters and links to their source code.  These may help
+in learning how to write converters.</p>
                 
               
               
@@ -396,6 +506,41 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="basic_usage.html" title="Basic Usage" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Basic Usage
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../converters.html" title="Converters" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Converters
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
