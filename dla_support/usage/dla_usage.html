@@ -546,7 +546,7 @@ one or more Deep Learning Accelerators (DLA).  These are dedicated hardware unit
 can utilize the DLA(s) on your device with torch2trt.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>We've benchmarked resnet18 running on Jetson Xavier NX under varying configurations.  You can find the results <a href="/benchmarks/dla_benchmarks.html">here</a>.  This may help you understand if DLA is applicable for your use case.</p>
+<p>We've benchmarked resnet18 running on Jetson Xavier NX under varying configurations.  You can find the results <a href="../benchmarks/dla_benchmarks.html">here</a>.  This may help you understand if DLA is applicable for your use case.</p>
 </div>
 <h2 id="enable-dla-globally">Enable DLA Globally</h2>
 <p>Enabling the DLA globally is done by passing <code>default_device_type=trt.DeviceType.DLA</code> to torch2trt.  If a layer is not supported on DLA, it will default to GPU.  Please note,
