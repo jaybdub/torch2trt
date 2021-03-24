@@ -7,10 +7,10 @@ from model import * # from EAST for EAST model class
 from detect import * # from EAST for detect, plot_boxes
 from torch2trt import torch2trt, TRTModule
 
-IMAGE = 'sign.jpg'
+IMAGE = 'assets/sign.jpg'
 TRT_MODEL_OUTPUT = 'east_trt.pth'
-TRT_IMAGE_OUTPUT = 'sign_east_trt.jpg'
-TORCH_IMAGE_OUTPUT = 'sign_east_torch.jpg'
+TRT_IMAGE_OUTPUT = 'assets/sign_east_trt.jpg'
+TORCH_IMAGE_OUTPUT = 'assets/sign_east_torch.jpg'
 WIDTH = 256
 HEIGHT = 256
 

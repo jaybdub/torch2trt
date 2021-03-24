@@ -3,7 +3,7 @@
 This example demonstrates how to perform TensorRT optimized text region detection using torch2trt.
 For this example we optimize the PyTorch reimplementation of EAST located at https://github.com/SakuraRiven/EAST.
 
-<img src="output/sign_east_trt.jpg"></img>
+<img src="assets/sign_east_trt.jpg"></img>
 
 The performance of this model (excluding pre/post-processing) is listed below
 
