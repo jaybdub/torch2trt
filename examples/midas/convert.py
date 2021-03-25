@@ -1,5 +1,6 @@
 from PIL import Image
 import sys
+import time
 import cv2
 import torch
 sys.path.append('MiDaS')
@@ -10,10 +11,12 @@ from midas.midas_net import MidasNet
 from midas.midas_net_custom import MidasNet_small
 from midas.transforms import Resize, NormalizeImage, PrepareForNet
 
-model_path = 'model_small.pt'
+
+WEIGHT_PATH = 'model_small.pt'
+TRT_OUTPUT_MODEL_PATH = 'midas_trt.pth'
 
 # requires patching Interpolate block in midas to not use interpolate as attribute
-model = MidasNet_small(model_path, features=64, backbone="efficientnet_lite3", exportable=True, non_negative=True, blocks={'expand': True})
+model = MidasNet_small(WEIGHT_PATH, features=64, backbone="efficientnet_lite3", exportable=True, non_negative=True, blocks={'expand': True})
 
 net_w, net_h = 256, 256
 
@@ -38,11 +41,27 @@ transform = Compose(
 model = model.cuda().eval()
 data = torch.rand(1, 3, net_h, net_w).cuda()
 
-print('Optimizing model...')
-model_trt = torch2trt(model, [data])
+print('Optimizing model with TensorRT...')
+model_trt = torch2trt(model, [data], int8_mode=True)
 
-torch.save(model_trt.state_dict(), 'midas_trt.pth')
 
-print(model_trt.engine.num_layers)
-print(torch.max(torch.abs(model(data) - model_trt(data))))
+torch.save(model_trt.state_dict(), TRT_OUTPUT_MODEL_PATH)
 
+def benchmark_fps(data, model):
+    torch.cuda.current_stream().synchronize()
+    t0 = time.time()
+    for i in range(50):
+        out = model(data)
+    torch.cuda.current_stream().synchronize()
+    t1 = time.time()
+    return 50 / (t1 - t0)
+
+print('Profiling PyTorch vs. TensorRT')
+model(data) # execute once for warmup
+fps_torch = benchmark_fps(data, model)
+
+model_trt(data) # execute once for warmup
+fps_tensorrt = benchmark_fps(data, model_trt)
+
+print('\tPyTorch: {fps}FPS'.format(fps=fps_torch))
+print('\tTensorRT: {fps}FPS'.format(fps=fps_tensorrt))
