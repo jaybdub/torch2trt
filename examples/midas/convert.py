@@ -42,7 +42,7 @@ model = model.cuda().eval()
 data = torch.rand(1, 3, net_h, net_w).cuda()
 
 print('Optimizing model with TensorRT...')
-model_trt = torch2trt(model, [data], int8_mode=True)
+model_trt = torch2trt(model, [data])
 
 
 torch.save(model_trt.state_dict(), TRT_OUTPUT_MODEL_PATH)
