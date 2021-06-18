@@ -6,7 +6,8 @@ from torch2trt.module_test import add_module_test
 def convert_cat(ctx):
     inputs = get_arg(ctx, 'input', pos=0, default=None) 
     dim = get_arg(ctx, 'dim', pos=1, default=0) 
-
+    dim = dim % len(inputs)
+    
     output = ctx.method_return
     trt_inputs = add_missing_trt_tensors(ctx.network, inputs)
     trt_inputs = broadcast_trt_tensors(ctx.network, trt_inputs, len(output.shape) - 1)

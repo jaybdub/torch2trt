@@ -274,6 +274,19 @@ def get_arg(ctx, name, pos, default):
         return default
 
 
+def args_contains_trt(args):
+    has_trt = False
+    for arg in args:
+        if isinstance(arg, torch.Tensor):
+            if hasattr(arg, '_trt'):
+                has_trt = True
+        elif isinstance(arg, (list, tuple)):
+            has_trt = has_trt or args_contains_trt(arg)
+        elif isinstance(arg, dict):
+            has_trt = has_trt or args_contains_trt(list(arg.values()))
+    return has_trt
+    
+    
 def attach_converter(ctx, method, converter, method_str):
     """Gets a function that executes PyTorch method and TensorRT converter"""
     global DUMMY_CONVERTERS
@@ -295,9 +308,9 @@ def attach_converter(ctx, method, converter, method_str):
             ctx.method_kwargs = kwargs
             ctx.method_return = outputs
             ctx.method_str = method_str
-
-            #             print('%s' % (converter.__name__,))
-            converter["converter"](ctx)
+            
+            if args_contains_trt(ctx.method_args):
+                converter["converter"](ctx)
 
             # convert to None so conversion will fail for unsupported layers
             ctx.method_args = None
