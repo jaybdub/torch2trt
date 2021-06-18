@@ -41,6 +41,7 @@ from .mean import *
 from .min import *
 from .mod import *
 from .mul import *
+from .matmul import *
 from .normalize import *
 from .ne import *
 from .narrow import *
