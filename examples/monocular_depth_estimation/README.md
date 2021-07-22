@@ -27,7 +27,7 @@ These benchmarks are performed on NVIDIA Jetson Xavier NX, with batch size 1, 25
     )
     ```
 
-3. Download the MiDaS small model weights into this example's folder.  Name them ``midas_trt.pth``.
+3. Download the [MiDaS small model](https://github.com/intel-isl/MiDaS/releases/download/v2_1/model-small-70d6b9c8.pt) weights into this example's folder.  Name them ``midas_small.pt``.
 4. Run ``convert.py`` from this example's folder to generate the optimized TensorRT engine
 
     ```bash
