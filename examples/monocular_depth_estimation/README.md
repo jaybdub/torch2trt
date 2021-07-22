@@ -17,6 +17,9 @@ These benchmarks are performed on NVIDIA Jetson Xavier NX, with batch size 1, 25
 
     ```bash
     git clone https://github.com/intel-isl/MiDaS
+    cd MiDaS
+    git checkout f275ca1c6f9af17aabe6f1e024b2084d7b84abb0
+    cd ..
     ```
 
 2. To resolve a torch2trt tracing error, modify the following line https://github.com/intel-isl/MiDaS/blob/f275ca1c6f9af17aabe6f1e024b2084d7b84abb0/midas/blocks.py#L117 to read
