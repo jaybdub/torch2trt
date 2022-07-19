@@ -8,4 +8,11 @@ jobs:
     runs-on: ['self-hosted', 'jetson-orin']
     steps:
       - uses: actions/checkout@v3
-      - run: pytest
+      - name: Run pytest
+        run: pytest --doctest-modules --junitxml=junit/test-results-jetson-orin.xml
+      - name: Upload pytest results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results-jetson-orin
+          path: junit/test-results-jetson-orin.xml
+        if: ${{ always() }}
