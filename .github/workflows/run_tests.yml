@@ -5,7 +5,7 @@ on:
       - 'example_workflow_jetson_runner'
 jobs:
   run_tests_orin:
-    runs-on: ['self-hosted']
+    runs-on: ['self-hosted', 'jetson-orin']
     steps:
       - uses: actions/checkout@v3
       - run: pytest
