@@ -2,7 +2,7 @@ name: run_tests
 on:
   push:
     branches:
-      - 'example_workflow_jetson_runner'
+      - 'disable'
 jobs:
   run_tests_orin:
     runs-on: ['self-hosted', 'jetson-orin']
