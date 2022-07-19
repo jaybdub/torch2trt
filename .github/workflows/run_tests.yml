@@ -6,5 +6,4 @@ jobs:
   run_tests_orin:
     runs-on: ['jetson-orin']
     steps:
-      - run: git fetch
       - run: pytest
