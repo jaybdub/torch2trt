@@ -4,6 +4,6 @@ on:
     inputs:
 jobs:
   run_tests_orin:
-    runs-on: ['jetson-orin']
+    runs-on: ['self-hosted']
     steps:
       - run: pytest
