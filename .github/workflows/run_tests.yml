@@ -1,4 +1,7 @@
 name: run_tests
+on:
+  workflow_dispatch:
+    inputs:
 jobs:
   run_tests_orin:
     runs-on: ['jetson-orin']
