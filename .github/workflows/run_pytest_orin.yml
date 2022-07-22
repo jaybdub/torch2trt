@@ -1,0 +1,17 @@
+name: Run Pytest on Jetson Orin
+on:
+  workflow_dispatch:
+
+jobs:
+  run_pytest:
+    runs-on: ['self-hosted', 'jetson-orin']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run PyTest
+        run: pytest --junitxml=junit/test-results-jetson-orin.xml
+      - name: Upload PyTest results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results-jetson-orin
+          path: junit/test-results-jetson-orin.xml
+        if: ${{ always() }}
