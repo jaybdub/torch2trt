@@ -1,7 +1,7 @@
 #!/bin/bash
 
 profile_timm() {
-    python3 scripts/profile_timm.py --model $1 --size $2
+    # python3 scripts/profile_timm.py --model $1 --size $2
     python3 scripts/profile_timm.py --model $1 --use-onnx --size $2
 }
 
