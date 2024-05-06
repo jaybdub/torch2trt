@@ -303,7 +303,8 @@ class WhisperTRT(nn.Module, Model):
         
         if model_path is None:
             model_path = cls.get_default_model_path()
-            os.makedirs(cls.get_default_model_dir())
+            if not os.path.exists(cls.get_default_model_dir()):
+                os.makedirs(cls.get_default_model_dir())
 
         checkpoint = {
             "dims": asdict(load_model(cls.model).dims),
